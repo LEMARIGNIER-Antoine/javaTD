@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
@@ -15,11 +18,14 @@ public class DynamicSprite extends SolidSprite {
     private static double currentHealth = 100; // Santé actuelle
     private boolean gameOverDisplayed = false; // Empêche d'afficher plusieurs fois "Game Over"
 
-    private CustomTimer customTimer; // Chronomètre personnalisé
+    private boolean isInvincible = false; // État d'invincibilité
+    private CustomTimer invincibilityTimer; // Timer pour gérer l'invincibilité
+    private CustomTimer customTimer; // Chronomètre global pour le sprite
 
     public DynamicSprite(double x, double y, Image image, double width, double height) {
         super(x, y, image, width, height);
         customTimer = new CustomTimer(); // Initialise le CustomTimer
+        invincibilityTimer = new CustomTimer(); // Chronomètre d'invincibilité
         customTimer.start(); // Démarre le chronomètre
     }
 
@@ -47,14 +53,35 @@ public class DynamicSprite extends SolidSprite {
                     // Collision avec un objet solide
                     return false;
                 }
-                if (s instanceof StaticSprite && ((StaticSprite) s).intersect(moved)) {
-                    // Collision avec un piège : réduit la santé
-                    currentHealth -= 10;
+                if (s instanceof StaticSprite && ((StaticSprite) s).intersect(moved)) { // trap
+                    if (!isInvincible) {
+                        // Réduire la santé et activer l'invincibilité
+                        currentHealth -= 10;
+                        activateInvincibility();
+                    }
                     canMove = true; // Autorise le mouvement
                 }
+
             }
         }
         return canMove;
+    }
+
+    private void activateInvincibility() {
+        isInvincible = true; // Active l'invincibilité
+        invincibilityTimer = new CustomTimer(); // Initialiser un nouveau CustomTimer pour l'invincibilité
+        invincibilityTimer.start();
+
+        // Utiliser un Timer Java standard pour planifier la fin de l'invincibilité
+        java.util.Timer timer = new java.util.Timer();
+        timer.schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                isInvincible = false; // Désactiver l'invincibilité
+                invincibilityTimer.stop(); // Arrêter le CustomTimer d'invincibilité
+                timer.cancel(); // Arrêter le Timer Java
+            }
+        }, 2000); // 2000 ms = 2 secondes
     }
 
     public void setDirection(Direction direction) {
