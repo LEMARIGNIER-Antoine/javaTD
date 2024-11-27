@@ -106,10 +106,6 @@ public class DynamicSprite extends SolidSprite {
             gameOverDisplayed = true;
         }
 
-        // Affichage du temps écoulé (chronomètre)
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("Arial", Font.BOLD, 14));
-        g.drawString("Time: " + getElapsedTime() + "s", (int) x, (int) y - 20);
     }
 
     private void displayGameOver() {
