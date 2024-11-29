@@ -21,6 +21,9 @@ public class Main {
         DynamicSprite hero = new DynamicSprite(200, 300,
                 ImageIO.read(new File("./img/heroTileSheetLowRes.png")), 48, 50);
 
+        DynamicSprite enemy = new DynamicSprite(500, 300,
+                ImageIO.read(new File("./img/heroTileSheetLowRes.png")), 48, 50);
+
         // Initialize the engines
         renderEngine = new RenderEngine(displayZoneFrame); // Responsible for rendering
         physicEngine = new PhysicEngine(); // Responsible for physics
@@ -49,7 +52,9 @@ public class Main {
         // Add level elements to the render engine and the physics engine
         renderEngine.addToRenderList(level.getSpriteList()); // Add static sprites to render list
         renderEngine.addToRenderList(hero); // Add the hero to the render list
+        renderEngine.addToRenderList(enemy);
         physicEngine.addToMovingSpriteList(hero); // Track the hero's movement
+        physicEngine.addToMovingSpriteList(enemy);
         physicEngine.setEnvironment(level.getSolidSpriteList()); // Set collision environment
 
         // Add a key listener to the main window for player input
