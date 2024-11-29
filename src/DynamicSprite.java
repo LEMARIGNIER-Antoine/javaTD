@@ -16,8 +16,8 @@ public class DynamicSprite extends SolidSprite {
     private double baseSpeed = 5;
     private double speed=baseSpeed;
 
-    private static double maxHealth = 100;
-    private static double currentHealth = 100;
+    private double maxHealth = 100;
+    private double currentHealth = 100;
     private boolean gameOverDisplayed = false; // Prevents "Game Over" from being displayed multiple times
 
     private boolean isInvincible = false;

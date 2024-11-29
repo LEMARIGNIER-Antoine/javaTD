@@ -1,9 +1,9 @@
 import java.awt.*;
 
 public class Enemy {
-    private int x, y; // Position de l'ennemi
-    private double speed; // Vitesse de déplacement
-    private Direction direction; // Direction actuelle de l'ennemi
+    private int x, y;
+    private double speed;
+    private Direction direction;
 
     public Enemy(int x, int y, int speed, Direction direction) {
         this.x = x;
