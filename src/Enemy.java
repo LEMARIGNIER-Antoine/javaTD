@@ -33,17 +33,16 @@ public class Enemy extends DynamicSprite{
     public void turnRight() {
         switch (direction) {
             case NORTH:
-
                 this.setDirection(Direction.WEST);
                 break;
             case SOUTH:
                 this.setDirection(Direction.EAST);
                 break;
             case WEST:
-                 this.setDirection(Direction.NORTH);
+                 this.setDirection(Direction.SOUTH);
                 break;
             case EAST:
-                this.setDirection(Direction.SOUTH);
+                this.setDirection(Direction.NORTH);
                 break;
 
         }
