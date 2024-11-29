@@ -14,7 +14,7 @@ public class Main {
     public Main() throws Exception {
         // Initialize the main game window
         displayZoneFrame = new JFrame("Java Labs");
-        displayZoneFrame.setSize(400, 600);
+        displayZoneFrame.setSize(1200, 600);
         displayZoneFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Create the hero character (dynamic sprite)

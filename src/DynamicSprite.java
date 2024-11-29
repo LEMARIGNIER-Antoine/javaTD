@@ -5,32 +5,34 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class DynamicSprite extends SolidSprite {
-    private Direction direction = Direction.EAST; // Direction par défaut
-    private double speed = 5; // Vitesse de déplacement
-    private double timeBetweenFrame = 250; // Temps entre deux frames pour l'animation
-    private final int spriteSheetNumberOfColumn = 10; // Nombre de colonnes dans la feuille de sprite
+    private Direction direction = Direction.EAST;
 
-    private static double maxHealth = 100; // Santé maximale
-    private static double currentHealth = 100; // Santé actuelle
-    private boolean gameOverDisplayed = false; // Empêche d'afficher plusieurs fois "Game Over"
+    private double timeBetweenFrame = 250;
+    private final int spriteSheetNumberOfColumn = 10;
 
-    private boolean isInvincible = false; // État d'invincibilité
-    private CustomTimer invincibilityTimer; // Timer pour gérer l'invincibilité
-    private CustomTimer customTimer; // Chronomètre global pour le sprite
+    private double baseSpeed = 5;
+    private double speed=baseSpeed;
+
+    private static double maxHealth = 100;
+    private static double currentHealth = 100;
+    private boolean gameOverDisplayed = false; // Prevents "Game Over" from being displayed multiple times
+
+    private boolean isInvincible = false;
+    private CustomTimer invincibilityTimer;
+    private CustomTimer customTimer; // Global timer for the sprite
 
     public DynamicSprite(double x, double y, Image image, double width, double height) {
         super(x, y, image, width, height);
-        customTimer = new CustomTimer(); // Initialise le CustomTimer
-        invincibilityTimer = new CustomTimer(); // Chronomètre d'invincibilité
-        customTimer.start(); // Démarre le chronomètre
+        customTimer = new CustomTimer(); // Initialize the CustomTimer
+        invincibilityTimer = new CustomTimer(); // Invincibility timer
+        customTimer.start(); // Start the timer
     }
 
     public int getElapsedTime() {
-        return customTimer.getSecondsElapsed(); // Retourne le temps écoulé en secondes
+        return customTimer.getSecondsElapsed(); // Returns elapsed time in seconds
     }
 
     private boolean isMovingPossible(ArrayList<Sprite> environment) {
@@ -50,16 +52,16 @@ public class DynamicSprite extends SolidSprite {
         for (Sprite s : environment) {
             if (s != this) {
                 if (s instanceof SolidSprite && ((SolidSprite) s).intersect(moved)) {
-                    // Collision avec un objet solide
+                    // Collision with a solid object
                     return false;
                 }
-                if (s instanceof StaticSprite && ((StaticSprite) s).intersect(moved)) { // trap
+                if (s instanceof StaticSprite && ((StaticSprite) s).intersect(moved)) { // Trap
                     if (!isInvincible) {
-                        // Réduire la santé et activer l'invincibilité
+                        // Reduce health and activate invincibility
                         currentHealth -= 10;
                         activateInvincibility();
                     }
-                    canMove = true; // Autorise le mouvement
+                    canMove = true; // Allows movement
                 }
 
             }
@@ -68,26 +70,33 @@ public class DynamicSprite extends SolidSprite {
     }
 
     private void activateInvincibility() {
-        isInvincible = true; // Active l'invincibilité
-        invincibilityTimer = new CustomTimer(); // Initialiser un nouveau CustomTimer pour l'invincibilité
+        isInvincible = true; // Activate invincibility
+        invincibilityTimer = new CustomTimer(); // Initialize a new CustomTimer for invincibility
         invincibilityTimer.start();
 
-        // Utiliser un Timer Java standard pour planifier la fin de l'invincibilité
+        // Use a standard Java Timer to schedule the end of invincibility
         java.util.Timer timer = new java.util.Timer();
         timer.schedule(new java.util.TimerTask() {
             @Override
             public void run() {
-                isInvincible = false; // Désactiver l'invincibilité
-                invincibilityTimer.stop(); // Arrêter le CustomTimer d'invincibilité
-                timer.cancel(); // Arrêter le Timer Java
+                isInvincible = false; // Disable invincibility
+                invincibilityTimer.stop();
+                timer.cancel(); // Stop the Java Timer
             }
-        }, 2000); // 2000 ms = 2 secondes
+        }, 2000); // 2000 ms = 2 seconds
     }
 
     public void setDirection(Direction direction) {
-        this.direction = direction; // Modifie la direction
+        this.direction = direction; // Change direction
     }
 
+    public double getBaseSpeed() {
+        return baseSpeed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed=speed;
+    }
     private void move() {
         switch (direction) {
             case NORTH -> this.y -= speed;
@@ -105,14 +114,14 @@ public class DynamicSprite extends SolidSprite {
 
     @Override
     public void draw(Graphics g) {
-        // Gestion de l'animation
+        // Animation management
         int index = (int) (System.currentTimeMillis() / timeBetweenFrame % spriteSheetNumberOfColumn);
 
         g.drawImage(image, (int) x, (int) y, (int) (x + width), (int) (y + height),
                 (int) (index * this.width), (int) (direction.getFrameLineNumber() * height),
                 (int) ((index + 1) * this.width), (int) ((direction.getFrameLineNumber() + 1) * this.height), null);
 
-        // Barre de santé
+        // Health bar
         int healthBarWidth = (int) width;
         int healthBarHeight = 5;
         int healthBarY = (int) y - 10;
@@ -127,7 +136,7 @@ public class DynamicSprite extends SolidSprite {
         g.setColor(Color.BLACK);
         g.drawRect((int) x, healthBarY, healthBarWidth, healthBarHeight);
 
-        // Gestion de l'écran "Game Over"
+        // "Game Over" screen management
         if (currentHealth <= 0 && !gameOverDisplayed) {
             displayGameOver();
             gameOverDisplayed = true;
