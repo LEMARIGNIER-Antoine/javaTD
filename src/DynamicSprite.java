@@ -8,7 +8,7 @@ import java.util.TimerTask;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class DynamicSprite extends SolidSprite {
-    private Direction direction = Direction.EAST;
+    protected Direction direction = Direction.EAST;
 
     private double timeBetweenFrame = 250;
     private final int spriteSheetNumberOfColumn = 10;

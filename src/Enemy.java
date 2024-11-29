@@ -1,13 +1,10 @@
 import java.awt.*;
 
-public class Enemy {
-    private int x, y;
+public class Enemy extends DynamicSprite{
     private double speed;
-    private Direction direction;
 
-    public Enemy(int x, int y, int speed, Direction direction) {
-        this.x = x;
-        this.y = y;
+    public Enemy(double x, double y, Image image, double width, double height, double speed, Direction direction) {
+        super(x, y, image, width, height);
         this.speed = speed;
         this.direction = direction;
     }
@@ -31,5 +28,25 @@ public class Enemy {
 
     public void enemyDirection(Direction direction) {
         this.direction = direction;
-}
+    }
+
+    public void turnRight() {
+        switch (direction) {
+            case NORTH:
+
+                this.setDirection(Direction.WEST);
+                break;
+            case SOUTH:
+                this.setDirection(Direction.EAST);
+                break;
+            case WEST:
+                 this.setDirection(Direction.NORTH);
+                break;
+            case EAST:
+                this.setDirection(Direction.SOUTH);
+                break;
+
+        }
+    }
+
 }

@@ -1,5 +1,8 @@
+import javax.imageio.ImageIO;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,11 +16,15 @@ public class GameEngine implements Engine, KeyListener {
     public GameEngine(DynamicSprite hero) {
         this.hero = hero;
         this.enemy = new ArrayList<>();
-        initializeEnemies();
+        try {
+            initializeEnemies();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void initializeEnemies() {
-        enemy.add(new Enemy(200, 200, 2, Direction.SOUTH));
+    private void initializeEnemies() throws IOException {
+        enemy.add(new Enemy(200, 200,  ImageIO.read(new File("./img/tree.png")),2,2,2, Direction.SOUTH));
     }
 
     @Override

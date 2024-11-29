@@ -4,6 +4,8 @@ import java.util.ArrayList;
 public class PhysicEngine implements Engine{
     private ArrayList<DynamicSprite> movingSpriteList;
     private ArrayList <Sprite> environment;
+    private Enemy enemy;
+
 
     public PhysicEngine() {
         movingSpriteList = new ArrayList<>();
@@ -14,6 +16,10 @@ public class PhysicEngine implements Engine{
         if (!environment.contains(sprite)){
             environment.add(sprite);
         }
+    }
+
+    public void setEnemy(Enemy enemy){
+        this.enemy = enemy;
     }
 
     public void setEnvironment(ArrayList<Sprite> environment){
@@ -31,5 +37,8 @@ public class PhysicEngine implements Engine{
         for(DynamicSprite dynamicSprite : movingSpriteList){
             dynamicSprite.moveIfPossible(environment);
         }
+
+        enemy.turnRight();
     }
+
 }
