@@ -15,7 +15,7 @@ public class CustomTimer {
             public void run() {
                 secondsElapsed++;
             }
-        }, 0, 1000); // Mise à jour toutes les secondes
+        }, 0, 1000); // update 1 second
     }
 
     public int getSecondsElapsed() {
