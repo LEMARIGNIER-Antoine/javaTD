@@ -1,4 +1,4 @@
-TD JAVA Lemarignier Antoine et Menegalli Julien
+# TD JAVA Lemarignier Antoine et Menegalli Julien
 
 Amélioration vis à vis du jeu de base :
   - barre de vie
@@ -7,3 +7,4 @@ Amélioration vis à vis du jeu de base :
   - une invincibilité après dégat de 2 s
   - une course possible après avoir appuyer sur ctrl
   - un game over
+  - un ennemie qui tourne en boucle
